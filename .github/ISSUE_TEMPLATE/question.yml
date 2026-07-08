@@ -1,0 +1,75 @@
+name: 问题咨询
+description: "报告部署问题或其他疑问（本地部署、服务器部署、Docker部署等）"
+title: "[问题]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢提交 issue! 请尽可能完整填写以下信息，帮助我们更好地定位问题~
+
+        ------
+  - type: checkboxes
+    attributes:
+      label: 是否已存在现有反馈与解答？
+      description: 请搜索 issue、discussion 以查看有没有相同或类似的问题。
+      options:
+      - label: 我确认没有已有 issue 或 discussion。
+        required: true
+  - type: dropdown
+    attributes:
+      label: 问题类型
+      description: 请选择您遇到的问题类型
+      options:
+        - 本地部署
+        - 服务器部署
+        - Docker 部署
+        - 功能使用
+        - 其他
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 问题描述
+      description: 请描述您遇到的问题。<br />
+        提示：如果可以，也请提供错误的截图。
+      placeholder: 发生什么事了？
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 复现操作
+      description: 你之前干了什么，然后出现了问题呢？
+      placeholder: |
+        1. 执行步骤一
+        2. 执行步骤二
+        3. 执行步骤三
+        4. 出现问题
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 错误日志
+      description: 请将终端中的主要错误报告粘贴至此处。
+      render: shell
+  - type: textarea
+    attributes:
+      label: 运行环境
+      description: |
+        请提供您的运行环境信息，以下是一个例子：
+        - **OS**: Windows 11 22H2 / Linux Ubuntu 22.04
+        - **Docker version**: 24.0.6 (如适用)
+        - **框架/库版本**: 
+        - **语言版本**: 
+      value: |
+        - OS:
+        - Docker version: (如适用)
+        - 框架/库版本:
+        - 语言版本:
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: 补充说明
+      description: 链接？参考资料？任何更多背景信息！

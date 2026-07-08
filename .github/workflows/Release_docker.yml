@@ -1,0 +1,76 @@
+name: Build and Push Docker when Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: "{{PROJECT_NAME}}"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+
+      - name: Set release tag
+        run: |
+          echo "RELEASE_TAG=${{ github.event.release.tag_name }}" >> ${GITHUB_ENV}
+
+      - name: Check Docker Hub configuration
+        run: |
+          if [ -n "${{ secrets.DOCKERHUB_USERNAME }}" ] && [ -n "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
+            echo "DOCKERHUB_CONFIGURED=true" >> ${GITHUB_ENV}
+          else
+            echo "DOCKERHUB_CONFIGURED=false" >> ${GITHUB_ENV}
+          fi
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        if: env.DOCKERHUB_CONFIGURED == 'true'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Set owner name
+        run: |
+          GITOWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')
+          echo "GITOWNER=$GITOWNER" >> ${GITHUB_ENV}
+
+      - name: Build and push to GHCR
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ env.GITOWNER }}/${{ env.IMAGE_NAME }}:latest
+            ghcr.io/${{ env.GITOWNER }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
+
+      - name: Build and push to Docker Hub
+        if: env.DOCKERHUB_CONFIGURED == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
