@@ -1,5 +1,5 @@
 name: 问题咨询
-description: "报告部署问题或其他疑问（本地部署、服务器部署、Docker部署等）"
+description: 报告部署问题或其他疑问
 title: "[问题]: "
 labels: ["question"]
 body:
@@ -31,8 +31,7 @@ body:
     id: what-happened
     attributes:
       label: 问题描述
-      description: 请描述您遇到的问题。<br />
-        提示：如果可以，也请提供错误的截图。
+      description: 请描述您遇到的问题。提示：如果可以，也请提供错误的截图。
       placeholder: 发生什么事了？
     validations:
       required: true
@@ -58,10 +57,10 @@ body:
       label: 运行环境
       description: |
         请提供您的运行环境信息，以下是一个例子：
-        - **OS**: Windows 11 22H2 / Linux Ubuntu 22.04
-        - **Docker version**: 24.0.6 (如适用)
-        - **框架/库版本**: 
-        - **语言版本**: 
+        - OS: Windows 11 22H2 / Linux Ubuntu 22.04
+        - Docker version: 24.0.6 (如适用)
+        - 框架/库版本: 
+        - 语言版本: 
       value: |
         - OS:
         - Docker version: (如适用)
