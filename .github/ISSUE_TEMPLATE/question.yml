@@ -1,5 +1,5 @@
 name: 问题咨询
-description: 报告部署问题或其他疑问
+description: "报告部署问题或其他疑问"
 title: "[问题]: "
 labels: ["question"]
 body:
@@ -14,18 +14,14 @@ body:
       label: 是否已存在现有反馈与解答？
       description: 请搜索 issue、discussion 以查看有没有相同或类似的问题。
       options:
-      - label: 我确认没有已有 issue 或 discussion。
-        required: true
-  - type: dropdown
+        - label: 我确认没有已有 issue 或 discussion。
+          required: true
+  - type: textarea
     attributes:
       label: 问题类型
-      description: 请选择您遇到的问题类型
-      options:
-        - 本地部署
-        - 服务器部署
-        - Docker 部署
-        - 功能使用
-        - 其他
+      description: 请描述问题类型（如：本地部署、服务器部署、Docker部署、功能使用等）
+      placeholder: 本地部署 / 服务器部署 / Docker 部署 / 功能使用 / 其他
+    validations:
       required: true
   - type: textarea
     id: what-happened
@@ -59,8 +55,8 @@ body:
         请提供您的运行环境信息，以下是一个例子：
         - OS: Windows 11 22H2 / Linux Ubuntu 22.04
         - Docker version: 24.0.6 (如适用)
-        - 框架/库版本: 
-        - 语言版本: 
+        - 框架/库版本:
+        - 语言版本:
       value: |
         - OS:
         - Docker version: (如适用)
